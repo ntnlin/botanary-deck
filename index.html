@@ -206,6 +206,123 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .dbar #dclose{font-family:var(--font-mono);font-size:12px;text-transform:none;color:var(--text-3);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer}
 .dbar #dclose:hover{color:var(--text);border-color:var(--green-line)}
 #dframe{flex:1;width:100%;border:0;background:#0a0c0a}
+
+/* ================= RESPONSIVE ================= */
+
+/* --- laptop / tablet: narrow the rail, let the flow diagram wrap --- */
+@media (max-width:1100px){
+  :root{--rail:76px}
+  .flow{flex-wrap:wrap;gap:10px}
+  .flow .conn{display:none}
+  .fnode{flex:1 1 44%;min-width:190px}
+  .mtx{font-size:13px}
+  .mtx th,.mtx td{padding:9px 8px}
+  .lyr{padding:16px 18px}
+}
+
+/* --- phone --- */
+@media (max-width:820px){
+  :root{--rail:0px}
+  #rail,#tag,#hint{display:none!important}
+  .slide{padding:52px 18px 22px!important;justify-content:flex-start;
+    overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+  .slide>.wrap{margin:auto;max-width:100%!important}
+  .src{position:static!important;width:100%;margin-top:18px;padding:0!important;font-size:11px;line-height:1.45}
+
+  /* release the desktop-only hard line locks so nothing overflows */
+  [style*="nowrap"]{white-space:normal!important}
+  [style*="max-content"]{width:auto!important}
+
+  /* type scale */
+  .ey{font-size:clamp(28px,8.4vw,42px)!important;margin-bottom:14px!important}
+  .display,.d1,.d2,.d3{font-size:clamp(28px,7.6vw,42px)!important}
+  .lead{font-size:clamp(16px,4.6vw,21px)!important;max-width:100%!important;line-height:1.35!important}
+  .sub{font-size:clamp(14px,3.9vw,18px)!important;max-width:100%!important}
+  .stat{font-size:clamp(58px,19vw,104px)!important}
+  .chip{font-size:13px;padding:9px 15px}
+  .badge svg{width:60px;height:60px}
+
+  /* stack every multi-column block */
+  .row3{grid-template-columns:1fr!important;gap:12px!important;max-width:100%!important}
+  .awards{grid-template-columns:1fr!important;gap:10px}
+  .split{grid-template-columns:1fr!important;gap:20px!important}
+  .card{padding:20px!important;border-radius:14px}
+  .card .sub{font-size:15px!important}
+
+  /* agenda */
+  .chap{grid-template-columns:auto 1fr;gap:12px;padding:9px 0}
+  .chap .ct{font-size:20px}
+  .chap .cd{display:none}
+
+  /* go-to-market phases */
+  .phase{grid-template-columns:1fr;gap:4px;padding:12px 0}
+  .phase .pnum{padding-top:0;font-size:12px}
+  .phase .pt{font-size:19px}
+  .phase .pd{font-size:14px}
+
+  /* market layers */
+  .lyr{grid-template-columns:auto 1fr;gap:10px 12px;padding:14px 16px}
+  .lyr .lt{font-size:16px}
+  .lyr .ld{font-size:12px}
+  .lyr .ln2{grid-column:1/-1;text-align:left;font-size:20px}
+
+  /* architecture flow: vertical stack */
+  .flow{flex-direction:column;gap:8px}
+  .fnode{flex:none;width:100%;padding:14px}
+  .fnode .pic{font-size:20px}
+  .fnode .pn{font-size:10px;margin-top:8px}
+  .fnode .pl{font-size:16px}
+
+  /* tables */
+  .mtx{font-size:10.5px}
+  .mtx th,.mtx td{padding:6px 4px}
+  .price{font-size:13px}
+  .price td{padding:9px 6px}
+  .price .amt{font-size:14px}
+  .price .anch{font-size:10.5px}
+
+  /* proof + deny */
+  .deny{padding:18px 16px}
+  .deny .inj{font-size:12.5px}
+  .deny .res .tt{font-size:14px}
+  .proof-list{gap:12px}
+  .pf .ic{width:34px;height:34px;font-size:15px}
+  .pf .tt{font-size:16px}
+  .pf .ss{font-size:13px}
+}
+
+/* --- phone landscape / short screens: scale off height, not width --- */
+@media (max-height:520px) and (orientation:landscape){
+  .slide{padding:30px 40px!important}
+  .ey{font-size:clamp(22px,6.4vh,38px)!important;margin-bottom:10px!important}
+  .display,.d1,.d2,.d3{font-size:clamp(22px,6.4vh,40px)!important}
+  .lead{font-size:clamp(14px,3.4vh,20px)!important}
+  .sub{font-size:clamp(12px,3vh,17px)!important}
+  .stat{font-size:clamp(44px,17vh,92px)!important}
+  .src{display:none}
+}
+
+/* ---- PRINT / EXPORT TO PDF: every slide becomes one 16:9 page ---- */
+@media print{
+  @page{size:1920px 1080px;margin:0}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  html,body{height:auto!important;overflow:visible!important;background:var(--bg)!important}
+  #rail,#tag,#hint,#prog,#nav,#demo{display:none!important}
+  #deck{position:static!important;inset:auto!important}
+  .slide{position:relative!important;display:flex!important;width:1920px;height:1080px;
+    padding:96px 104px!important;break-after:page;page-break-after:always;break-inside:avoid;overflow:hidden}
+  .slide:last-child{break-after:auto;page-break-after:auto}
+  /* freeze all entrance animations in their finished state */
+  .slide,.slide.active{animation:none!important;opacity:1!important}
+  .rv{opacity:1!important;transform:none!important;transition:none!important}
+  .mask>span{transform:none!important;transition:none!important}
+  .flow .fnode,.flow .conn{opacity:1!important;animation:none!important}
+  .fnode.hot::after,.conn::before,.chat .top .st .d,.dbar .ddot{animation:none!important}
+  /* gradient-clipped text does not survive print: fall back to solid brand colour */
+  .stat{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+    -webkit-text-fill-color:currentColor!important;color:var(--green-bright)!important}
+  .stat.red{color:var(--danger)!important}
+}
 </style>
 </head>
 <body>
@@ -247,7 +364,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
     <div class="chapters">
       <div class="chap rv" style="--i:1"><span class="cn">01</span><span class="ct">The problem</span><span class="cd">agents move funds, nothing caps them</span></div>
       <div class="chap rv" style="--i:2"><span class="cn">02</span><span class="ct">The solution</span><span class="cd">the limit lives in the account</span></div>
-      <div class="chap rv" style="--i:3"><span class="cn">03</span><span class="ct">Go-to-market</span><span class="cd">ACP first, then every stack</span></div>
+      <div class="chap rv" style="--i:3"><span class="cn">03</span><span class="ct">Go-to-market</span><span class="cd">agent marketplaces first, then every stack</span></div>
       <div class="chap rv" style="--i:4"><span class="cn">04</span><span class="ct">The moat</span><span class="cd">enforcement no custodian owns</span></div>
       <div class="chap rv" style="--i:5"><span class="cn">05</span><span class="ct">The model</span><span class="cd">SaaS plus protected-volume fee</span></div>
       <div class="chap rv" style="--i:6"><span class="cn">06</span><span class="ct">Traction &amp; team</span><span class="cd">shipping, winning, 30 days new</span></div>
@@ -260,32 +377,33 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <section data-slide data-ch="1">
   <div class="wrap">
     <div class="ey rv" style="--i:0">The problem</div>
-    <div class="stat"><span class="megacount" data-count="$470M+">$470M+</span></div>
-    <p class="lead rv" style="--i:1;margin-top:12px;max-width:24ch">agentic GDP on ACP. Agents move real money — <b class="g">nothing caps how much.</b></p>
+    <div class="stat red"><span class="megacount" data-count="$175K">$175K</span></div>
+    <p class="lead rv" style="--i:1;margin-top:10px;max-width:30ch">gone in one message. A <b class="neg">Morse-code prompt</b> tricked Grok into emitting a transfer, and a bot executed it on-chain.</p>
+    <p class="sub rv" style="--i:2;margin-top:24px;max-width:none;width:max-content;margin-left:auto;margin-right:auto;white-space:nowrap;font-size:clamp(18px,2.6vw,40px);font-weight:500;color:var(--text)">This is why banks <b class="g">won't let an agent near real money.</b></p>
   </div>
-  <div class="src">Virtuals ACP: 18,000+ agents, $470M+ agentic GDP, 1.77M completed jobs (Virtuals public metrics, 2026)</div>
+  <div class="src">May 4, 2026: attacker sent Morse code to @grok on X; Grok decoded it and tagged @bankrbot, which auto-executed a ~3B DRB transfer. SlowMist root cause: no spending limit, no permission isolation. Reported $150K–200K; most later recovered. · slowmist.medium.com · @wintermute_t</div>
 </section>
 
 <!-- 4 PROBLEM · DETAIL -->
 <section data-slide data-ch="1">
   <div class="wrap wide">
     <div class="ey rv" style="--i:0">The gap</div>
-    <p class="lead rv" style="--i:1;max-width:26ch;margin-bottom:34px">Guardrails stop at the address. <span class="neg">No dollar ceiling.</span></p>
-    <div class="row3 rv" style="--i:2;grid-template-columns:1fr 1fr;gap:22px;max-width:940px;margin:0 auto;text-align:left">
-      <div class="card"><div class="label" style="color:#f0b4a4">Today</div><p class="sub" style="font-size:clamp(17px,1.6vw,22px);margin-top:10px;margin-left:0">Allowlists and on/off modes. <b class="neg">No hard cap.</b></p></div>
-      <div class="card"><div class="label" style="color:#f0b4a4">The risk</div><p class="sub" style="font-size:clamp(17px,1.6vw,22px);margin-top:10px;margin-left:0">One jailbreak <b class="neg">drains the whole wallet.</b></p></div>
+    <p class="lead rv" style="--i:1;max-width:none;margin-bottom:38px">Guardrails stop at the address.<br><span class="neg" style="white-space:nowrap">No dollar ceiling.</span></p>
+    <div class="row3 rv" style="--i:2;grid-template-columns:1fr 1fr;gap:28px;max-width:1120px;margin:0 auto;text-align:left">
+      <div class="card" style="padding:44px 46px"><div class="label" style="color:#f0b4a4;font-size:clamp(14px,1.25vw,18px)">Today</div><p class="sub" style="font-size:clamp(20px,2vw,30px);margin-top:14px;margin-left:0;line-height:1.4">Allowlists and on/off modes.<br><b class="neg" style="white-space:nowrap">No hard cap.</b></p></div>
+      <div class="card" style="padding:44px 46px"><div class="label" style="color:#f0b4a4;font-size:clamp(14px,1.25vw,18px)">The risk</div><p class="sub" style="font-size:clamp(20px,2vw,30px);margin-top:14px;margin-left:0;line-height:1.4">One jailbreak<br><b class="neg" style="white-space:nowrap">drains the whole wallet.</b></p></div>
     </div>
     <p class="sub rv" style="--i:3;margin-top:26px;max-width:44ch;font-size:clamp(18px,1.8vw,24px)">An intern gets a <b class="g">$500 card.</b> Agents get the vault.</p>
   </div>
-  <div class="src">ACP v2 signer policies (restricted / deny-all / unrestricted) + contract allowlists · Money that isn't safe to delegate never enters the agent economy</div>
+  <div class="src">Today's agent guardrails: signer policies (restricted / deny-all / unrestricted) + contract allowlists, with no hard dollar ceiling · Money that isn't safe to delegate never enters the agent economy</div>
 </section>
 
 <!-- 5 SOLUTION (forest) -->
 <section data-slide data-ch="2">
   <div class="wrap">
     <div class="ey rv" style="--i:0">The solution</div>
-    <p class="lead rv" style="--i:1;max-width:30ch">The limit lives in the <span class="g">account</span>, not the prompt.</p>
-    <p class="sub rv" style="--i:2;margin-top:24px;max-width:36ch;font-size:clamp(19px,1.9vw,26px)">Caps, allowlists, expiry on ERC-4337. Exceed the mandate — <b class="g">the contract reverts it.</b></p>
+    <p class="lead rv" style="--i:1;max-width:none;font-size:clamp(26px,3.3vw,54px);line-height:1.2">The limit lives in the <span class="g" style="white-space:nowrap">smart wallet</span>,<br>not the prompt.</p>
+    <p class="sub rv" style="--i:2;margin-top:30px;max-width:34ch;font-size:clamp(20px,2.2vw,32px)">Caps, allowlists, expiry on ERC-4337. Exceed the mandate and <b class="g">the contract reverts it.</b></p>
   </div>
 </section>
 
@@ -298,7 +416,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       <span class="conn"></span>
       <div class="fnode"><span class="pic">▤</span><div class="pn">PROPOSES</div><div class="pl">Action</div></div>
       <span class="conn"></span>
-      <div class="fnode hot"><span class="pic">⛨</span><div class="pn">ACP HOOK · SESSION KEY</div><div class="pl">Botanary enforces</div></div>
+      <div class="fnode hot"><span class="pic">⛨</span><div class="pn">HOOK · SESSION KEY</div><div class="pl">Botanary enforces</div></div>
       <span class="conn"></span>
       <div class="fnode"><span class="pic">◔</span><div class="pn">$ CAP · DAY CAP · ALLOWLIST · EXPIRY</div><div class="pl">Only in-scope passes</div></div>
       <span class="conn"></span>
@@ -329,7 +447,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <div class="wrap wide">
     <div class="ey rv" style="--i:0">Go-to-market</div>
     <div style="max-width:1000px;margin:0 auto">
-      <div class="phase rv" style="--i:1"><div class="pnum">0–3 mo</div><div><div class="pt">ACP — the beachhead</div><div class="pd">Production Hook on Base, co-pilot 1–2 yield agents. "Hard-capped, auditable" sells to their depositors.</div></div></div>
+      <div class="phase rv" style="--i:1"><div class="pnum">0–3 mo</div><div><div class="pt">Agent marketplaces — the beachhead</div><div class="pd">Production Hook on Base, co-pilot 1–2 yield agents. "Hard-capped, auditable" sells to their depositors.</div></div></div>
       <div class="phase rv" style="--i:2"><div class="pnum">3–7.5 mo</div><div><div class="pt">Other agent stacks</div><div class="pd">Adapters for Coinbase CDP, Privy, x402. Vendor-neutral, owned by no custodian.</div></div></div>
       <div class="phase rv" style="--i:3"><div class="pnum">7.5–12 mo</div><div><div class="pt">Banks &amp; fintechs</div><div class="pd">White-label safe-concierge. GoTyme conversations already open.</div></div></div>
     </div>
@@ -341,7 +459,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <div class="wrap wide">
     <div class="ey rv" style="--i:0">The market</div>
     <div class="layers" style="max-width:1040px;margin:0 auto">
-      <div class="lyr hl rv" style="--i:1"><span class="ln">01</span><div><div class="lt">Virtuals today — the wedge</div><div class="ld">30% of activity financial · Botanary protects half → ~$70M protected volume. Small, but the proof dataset.</div></div><span class="ln2">~$70K/yr</span></div>
+      <div class="lyr hl rv" style="--i:1"><span class="ln">01</span><div><div class="lt">Agent marketplaces today — the wedge</div><div class="ld">~$470M agentic GDP live · 30% financial · we protect half → ~$70M protected. Small, but the proof dataset.</div></div><span class="ln2">~$70K/yr</span></div>
       <div class="lyr rv" style="--i:2"><span class="ln">02</span><div><div class="lt">Agent-payments infra · 2027–28</div><div class="ld">x402 / agentic rails across CDP, Skyfire, Stripe/Privy. $10B annual agent-managed flow, 25% of protected share.</div></div><span class="ln2">~$25M ARR</span></div>
       <div class="lyr rv" style="--i:3"><span class="ln">03</span><div><div class="lt">Bank-grade AI concierges</div><div class="ld">Per-check enterprise pricing at bank-scale volume. Two design-partner conversations already open.</div></div><span class="ln2">6-figure ARR / deal</span></div>
     </div>
@@ -354,14 +472,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
   <div class="wrap wide">
     <div class="ey rv" style="--i:0">The moat</div>
     <table class="mtx rv" style="--i:1;max-width:1120px;margin:0 auto">
-      <thead><tr><th>Player</th><th>Enforcement location</th><th>Dollar caps</th><th>Vendor-neutral</th><th>ACP-native</th></tr></thead>
+      <thead><tr><th>Player</th><th>Enforcement location</th><th>Dollar caps</th><th>Vendor-neutral</th></tr></thead>
       <tbody>
-        <tr><td>Coinbase Agentic Wallets</td><td class="c">Off-chain (enclave, in custody)</td><td class="c y">Yes</td><td class="c n">No</td><td class="c n">No</td></tr>
-        <tr><td>Privy (Stripe)</td><td class="c">Off-chain (signing service)</td><td class="c p">Partial</td><td class="c n">No</td><td class="c n">No</td></tr>
-        <tr><td>Turnkey</td><td class="c">Off-chain (enclave policy)</td><td class="c p">Partial</td><td class="c n">No</td><td class="c n">No</td></tr>
-        <tr><td>ZeroDev</td><td class="c">On-chain primitive</td><td class="c p">Raw primitive</td><td class="c y">Yes</td><td class="c n">No</td></tr>
-        <tr><td>ACP signer policies</td><td class="c">Server-side allowlists</td><td class="c n">None</td><td class="c">N/A</td><td class="c y">Yes</td></tr>
-        <tr class="us"><td>Botanary</td><td class="c">On-chain (contract reverts)</td><td class="c y">$ / daily / per-job</td><td class="c y">Any ERC-4337</td><td class="c y">Hook + adapter</td></tr>
+        <tr><td>Coinbase Agentic Wallets</td><td class="c">Off-chain (enclave, in custody)</td><td class="c y">Yes</td><td class="c n">No</td></tr>
+        <tr><td>Privy (Stripe)</td><td class="c">Off-chain (signing service)</td><td class="c p">Partial</td><td class="c n">No</td></tr>
+        <tr><td>Turnkey</td><td class="c">Off-chain (enclave policy)</td><td class="c p">Partial</td><td class="c n">No</td></tr>
+        <tr><td>ZeroDev</td><td class="c">On-chain primitive</td><td class="c p">Raw primitive</td><td class="c y">Yes</td></tr>
+        <tr class="us"><td>Botanary</td><td class="c">On-chain (contract reverts)</td><td class="c y">$ / daily / per-job</td><td class="c y">Any ERC-4337</td></tr>
       </tbody>
     </table>
     <p class="sub rv" style="--i:2;margin-top:24px;max-width:46ch;font-size:clamp(18px,1.8vw,24px)"><b class="am">Coinbase caps inside its own custody.</b> Ours is <b class="g">enforcement no custodian owns.</b></p>
@@ -387,7 +504,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 <section data-slide data-ch="6">
   <div class="wrap wide left">
     <div class="ey rv" style="--i:0;text-align:center">Traction</div>
-    <div style="display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;max-width:1120px;margin:0 auto">
+    <div class="split" style="display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;max-width:1120px;margin:0 auto">
       <div class="proof-list rv" style="--i:1">
         <div class="pf"><span class="ic">★</span><div><div class="tt">Winner — Agentic AI Build Week 2026</div><div class="ss">Financial Services Track · TymeX &amp; AWS judges.</div></div></div>
         <div class="pf"><span class="ic">⛨</span><div><div class="tt">0 / 6 prompt-injection bypasses</div><div class="ss">Live, in front of judges.</div></div></div>
@@ -414,7 +531,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
       <div class="aw champ"><div class="rk">Champion</div><div class="nm">Movement Vietnam 2024</div><div class="dt">Vietnam</div></div>
       <div class="aw"><div class="rk">3rd place</div><div class="nm">Colosseum 2026</div><div class="dt">Korea Track</div></div>
       <div class="aw"><div class="rk">2nd place</div><div class="nm">Seoulana 2026</div><div class="dt">backed by Colosseum</div></div>
-      <div class="aw ihl" style="display:flex;flex-direction:column;justify-content:center"><div class="rk" style="color:var(--iris)">Unique access</div><div class="nm" style="font-size:clamp(17px,1.6vw,21px)">Top-5 ASEAN digital bank + Virtuals DevRel</div><div class="dt">earned by building</div></div>
+      <div class="aw ihl" style="display:flex;flex-direction:column;justify-content:center"><div class="rk" style="color:var(--iris)">Unique access</div><div class="nm" style="font-size:clamp(17px,1.6vw,21px)">Top-5 ASEAN digital bank + agent-platform DevRel</div><div class="dt">earned by building</div></div>
     </div>
   </div>
 </section>
